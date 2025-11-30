@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>TaskFlow - Tasks, Shopping & Planning</title>
+    
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/categories.css" />
+    <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/progress.css" />
+    <link rel="stylesheet" href="css/dates.css" />
+    <link rel="stylesheet" href="css/modals.css" />
+    <link rel="stylesheet" href="css/calendar.css" />
+    <link rel="stylesheet" href="css/components.css" />
+</head>
+<body class="preload">
+
+<!-- TOP NAV BAR -->
+<nav class="navbar navbar-expand-lg sticky-top" style="background: var(--box-bg); border-bottom: 1px solid var(--border);">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1" style="color: var(--text);">
+            <i class="bi bi-check2-circle"></i> TaskFlow
+        </span>
+        
+        <div class="d-flex align-items-center gap-2">
+            <!-- Calendar Button -->
+            <button id="calendarBtn" class="btn btn-sm" style="background: var(--item-bg); color: var(--text);" title="Calendar View">
+                <i class="bi bi-calendar3"></i>
+            </button>
+            
+            <!-- Help Button -->
+            <button id="helpBtn" class="btn btn-sm" style="background: var(--item-bg); color: var(--text);" title="Keyboard Shortcuts">
+                <i class="bi bi-question-circle"></i>
+            </button>
+            
+            <!-- Accent Color -->
+            <select id="accentSelect" class="form-select form-select-sm" style="width: 120px;">
+                <option value="blue">Blue</option>
+                <option value="green">Green</option>
+                <option value="orange">Orange</option>
+                <option value="purple">Purple</option>
+            </select>
+            
+            <!-- Night Mode Toggle -->
+            <div class="form-check form-switch m-0">
+                <input class="form-check-input" type="checkbox" id="nightToggle" />
+                <label class="form-check-label" for="nightToggle" style="color: var(--text);">
+                    <i class="bi bi-moon-stars"></i>
+                </label>
+            </div>
+            
+            <!-- Export/Import -->
+            <button id="exportBtn" class="btn btn-sm btn-outline-secondary" title="Export Data (JSON)">
+                <i class="bi bi-download"></i>
+            </button>
+            <button id="exportCalendarBtn" class="btn btn-sm btn-outline-primary" title="Export to Calendar (.ics)">
+                <i class="bi bi-calendar-check"></i>
+            </button>
+            <button id="importBtn" class="btn btn-sm btn-outline-secondary" title="Import Data">
+                <i class="bi bi-upload"></i>
+            </button>
+            <input type="file" id="importFile" accept=".json" style="display: none;" />
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid py-3">
+    <div class="center-wrapper">
+        
+        <!-- SUMMARY DASHBOARD -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="summary-card p-3">
+                    <div class="summary-label">Total Tasks</div>
+                    <div class="summary-value" id="totalCount">0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-card p-3">
+                    <div class="summary-label">Completed</div>
+                    <div class="summary-value" id="doneCount">0</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="summary-card p-3">
+                    <div class="summary-label">Urgent</div>
+                    <div class="summary-value" id="urgentCount">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FILTER & SEARCH CONTROLS -->
+        <div class="card mb-4" style="background: var(--box-bg); border: 1px solid var(--border);">
+            <div class="card-body">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-3">
+                        <input
+                            type="text"
+                            id="searchBox"
+                            class="form-control form-control-sm"
+                            placeholder="🔍 Search tasks..."
+                        />
+                    </div>
+                    <div class="col-md-2">
+                        <select id="filterCategory" class="form-select form-select-sm">
+                            <option value="all">All Categories</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="statusFilter" class="form-select form-select-sm">
+                            <option value="all">All Status</option>
+                            <option value="notdone">Not Done</option>
+                            <option value="done">Done</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="priorityFilter" class="form-select form-select-sm">
+                            <option value="all">All Priority</option>
+                            <option value="high">High</option>
+                            <option value="medium">Medium</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select id="sortSelect" class="form-select form-select-sm">
+                            <option value="az">A → Z</option>
+                            <option value="za">Z → A</option>
+                            <option value="priority">Priority</option>
+                            <option value="donefirst">Done First</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="favOnly" />
+                            <label class="form-check-label" for="favOnly" title="Show only urgent tasks">
+                                <i class="bi bi-star-fill" style="color: var(--accent);"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flatToggle" />
+                            <label class="form-check-label" for="flatToggle" style="color: var(--text);">
+                                Flat List (no categories)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ADD NEW ITEM FORM -->
+        <div class="card mb-4" style="background: var(--box-bg); border: 1px solid var(--border);">
+            <div class="card-body">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-5">
+                        <input
+                            type="text"
+                            id="itemInput"
+                            class="form-control"
+                            placeholder="Add new task..."
+                        />
+                    </div>
+                    <div class="col-md-3">
+                        <select id="category" class="form-select">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="addBtn" class="btn btn-primary w-100">
+                            <i class="bi bi-plus-circle"></i> Add
+                        </button>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="addCategoryBtn" class="btn btn-outline-secondary w-100" title="Add New Category">
+                            <i class="bi bi-folder-plus"></i> Category
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CATEGORIES & ITEMS -->
+        <div id="categoriesContainer">
+            <!-- Dynamically rendered -->
+        </div>
+        
+        <!-- FLAT LIST VIEW (hidden by default) -->
+        <div id="flatContainer" class="d-none">
+            <ul id="flatList" style="list-style: none; padding: 0;">
+                <!-- Dynamically rendered when flat mode is active -->
+            </ul>
+        </div>
+        
+        <!-- DELETE ALL BUTTON -->
+        <div class="text-center mt-4 mb-5">
+            <button id="deleteAllBtn" class="delete-all-btn">
+                <i class="bi bi-trash3"></i>
+                Delete All Tasks
+            </button>
+        </div>
+        
+    </div>
+</div>
+
+<!-- FLOATING ADD BUTTON -->
+<button class="fab-add" title="Quick Add (N)">
+    <i class="bi bi-plus-lg"></i>
+</button>
+
+<!-- KEYBOARD SHORTCUTS MODAL -->
+<div id="shortcutsModal" class="shortcuts-modal d-none">
+    <div class="shortcuts-overlay"></div>
+    <div class="shortcuts-content">
+        <div class="shortcuts-header">
+            <h3><i class="bi bi-keyboard"></i> Keyboard Shortcuts & Features</h3>
+            <button id="closeShortcuts" class="shortcuts-close">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="shortcuts-body">
+            <div class="shortcut-section">
+                <h4>Navigation</h4>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">New task</span>
+                    <div class="shortcut-keys"><kbd>N</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Search</span>
+                    <div class="shortcut-keys"><kbd>/</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Toggle flat list</span>
+                    <div class="shortcut-keys"><kbd>F</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Toggle starred</span>
+                    <div class="shortcut-keys"><kbd>S</kbd></div>
+                </div>
+            </div>
+            
+            <div class="shortcut-section">
+                <h4>Filters</h4>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">High priority</span>
+                    <div class="shortcut-keys"><kbd>1</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Medium priority</span>
+                    <div class="shortcut-keys"><kbd>2</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Low priority</span>
+                    <div class="shortcut-keys"><kbd>3</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Clear filter</span>
+                    <div class="shortcut-keys"><kbd>0</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Show all</span>
+                    <div class="shortcut-keys"><kbd>A</kbd></div>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Show done</span>
+                    <div class="shortcut-keys"><kbd>D</kbd></div>
+                </div>
+            </div>
+            
+            <div class="shortcut-section">
+                <h4>Features</h4>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">✨ Priority levels (H/M/L)</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">📅 Start & Due dates with times</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">⏰ Time toggle (left-click add, right-click remove)</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">🔄 Recurring tasks</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">📊 Timeline visualization</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">✅ Subtasks with dates</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">📝 Notes for each task</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">⭐ Favorite/Urgent marking</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">🗂️ Custom categories</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">🎨 4 color themes + dark mode</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">💾 Export/Import JSON</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">📤 Export to iCalendar</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">🖱️ Drag & drop to calendar</span>
+                </div>
+            </div>
+            
+            <div class="shortcut-section">
+                <h4>Calendar Drag & Drop</h4>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Open calendar, drag task to date</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Normal drag = Set due date 🏁</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Shift + drag = Set start date 📅</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">Week/Month view toggle</span>
+                </div>
+            </div>
+            
+            <div class="shortcut-section">
+                <h4>Date & Time Controls</h4>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">📅 Left-click: Set/edit date</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">📅 Right-click: Remove date</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">⏰ Left-click: Add/edit time</span>
+                </div>
+                <div class="shortcut-item">
+                    <span class="shortcut-desc">⏰ Right-click: Remove time (keep date)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CALENDAR MODAL -->
+<div id="calendarModal" class="shortcuts-modal d-none">
+    <div class="calendar-content">
+        <div class="shortcuts-header">
+            <h3><i class="bi bi-calendar3"></i> Calendar View</h3>
+            <button id="closeCalendar" class="shortcuts-close">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="calendar-body">
+            <!-- Instruction Banner -->
+            <div class="calendar-instruction">
+                <i class="bi bi-info-circle-fill"></i>
+                <span>
+                    <strong>Drag & Drop:</strong> Drag tasks to set due date 🏁 | 
+                    Hold <kbd>Shift</kbd> while dragging to set start date 📅
+                </span>
+            </div>
+            
+            <!-- Calendar Navigation -->
+            <div class="calendar-nav">
+                <button id="calendarPrevBtn" class="calendar-nav-btn">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button id="calendarTodayBtn" class="calendar-today-btn">
+                    Today
+                </button>
+                <h4 id="calendarMonthYear">November 2024</h4>
+                <button id="calendarNextBtn" class="calendar-nav-btn">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+                <button id="calendarViewToggle" class="calendar-view-toggle">
+                    <i class="bi bi-calendar-week"></i> Week
+                </button>
+            </div>
+            
+            <!-- Legend -->
+            <div class="calendar-legend">
+                <div class="legend-item">
+                    <span class="legend-dot overdue"></span>
+                    <span>Overdue</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot today"></span>
+                    <span>Due Today</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot upcoming"></span>
+                    <span>Upcoming</span>
+                </div>
+            </div>
+            
+            <!-- Calendar Grid -->
+            <div id="calendarGrid">
+                <!-- Dynamically rendered -->
+            </div>
+            
+            <!-- Selected Day Tasks -->
+            <div id="calendarTaskList" class="calendar-task-list d-none">
+                <h5>Tasks for <span id="selectedDateTitle"></span></h5>
+                <div id="selectedDateTasks">
+                    <!-- Dynamically rendered -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts - ORDER MATTERS! -->
+<script src="js/storage.js"></script>
+<script src="js/items.js"></script>
+<script src="js/categories.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/sorting.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/recurring.js"></script>
+<script src="js/ical-export.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/shortcuts.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/dialogs.js"></script>
+<script src="js/main.js"></script>
+
+<script>
+    // Remove preload class after page loads to enable transitions
+    window.addEventListener('load', () => {
+        document.body.classList.remove('preload');
+    });
+</script>
+
+</body>
+</html>

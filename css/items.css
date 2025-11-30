@@ -1,0 +1,258 @@
+/* ======================================================
+   LIST ITEMS (CARD STYLE)
+====================================================== */
+
+li.item {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    padding: 10px 14px;
+    margin: 6px 0;
+
+    background: var(--item-bg);
+    border-radius: 12px;
+
+    box-shadow: 0 1px 5px rgba(15, 23, 42, 0.25);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+
+    transition:
+        background 0.25s ease,
+        transform 0.15s ease,
+        opacity 0.25s ease,
+        box-shadow 0.25s ease;
+    
+    position: relative;
+}
+
+li.item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.45);
+}
+
+/* Draggable state */
+li.item[draggable="true"] {
+    cursor: grab !important;
+}
+
+li.item[draggable="true"]:active {
+    cursor: grabbing !important;
+}
+
+li.item[draggable="true"] *:not(button):not(input):not(textarea):not(select) {
+    cursor: inherit !important;
+}
+
+li.item[draggable="true"]:active *:not(button):not(input):not(textarea):not(select) {
+    cursor: inherit !important;
+}
+
+/* Override any button cursors when dragging */
+li.item[draggable="true"] button,
+li.item[draggable="true"] .icon-btn {
+    cursor: pointer !important;
+}
+
+li.item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.45);
+}
+
+/* Item main row (text + buttons) */
+.item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    pointer-events: none; /* Let drag events pass through to parent */
+}
+
+.item-text {
+    flex: 1;
+    word-break: break-word;
+    cursor: inherit;
+    pointer-events: none; /* Let drag events pass through to parent */
+}
+
+.item-buttons {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    pointer-events: auto; /* Buttons need to be clickable */
+}
+
+/* All buttons inside items need pointer-events */
+.item-buttons button,
+.item-buttons .icon-btn,
+.item-buttons .priority-btn,
+.item-buttons .date-btn {
+    pointer-events: auto;
+}
+
+/* Done items */
+li.item.done .item-text {
+    text-decoration: line-through;
+    color: var(--done-color);
+}
+
+li.item.done {
+    opacity: 0.78;
+}
+
+/* Subtask indicator badge */
+.subtask-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.subtask-indicator i {
+    font-size: 0.85rem;
+}
+
+/* ======================================================
+   ICON BUTTONS
+====================================================== */
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--icon);
+    cursor: pointer;
+    padding: 2px;
+    font-size: 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: color 0.15s ease, transform 0.12s ease;
+}
+
+.icon-btn:hover {
+    color: var(--icon-hover);
+    transform: scale(1.1);
+}
+
+/* Favorite icon uses accent when active */
+li.favorite .fav-btn i {
+    color: var(--accent);
+}
+
+/* Priority indicator */
+.priority-indicator {
+    width: 4px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 12px 0 0 12px;
+    transition: background 0.2s ease;
+}
+
+li.item.priority-high .priority-indicator {
+    background: #ef4444;
+}
+
+li.item.priority-medium .priority-indicator {
+    background: #f59e0b;
+}
+
+li.item.priority-low .priority-indicator {
+    background: #10b981;
+}
+
+/* Priority button */
+.priority-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-right: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    user-select: none;
+    background: var(--item-bg);
+    min-width: 35px;
+}
+
+.priority-btn.none {
+    color: var(--icon);
+    border-color: var(--border);
+}
+
+.priority-btn.low {
+    color: #10b981;
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.priority-btn.medium {
+    color: #f59e0b;
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.priority-btn.high {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.priority-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ======================================================
+   ITEM ANIMATIONS
+====================================================== */
+
+.fade-in {
+    animation: fadeInItem 0.22s ease-out;
+}
+
+@keyframes fadeInItem {
+    from { opacity: 0; transform: translateY(-3px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.delete-anim {
+    animation: deleteItem 0.25s ease forwards;
+}
+
+@keyframes deleteItem {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(-40px); }
+}
+
+/* ======================================================
+   NOTES
+====================================================== */
+
+.note-box {
+    width: 100%;
+}
+
+.note-input {
+    width: 100%;
+    resize: vertical;
+    font-size: 0.85rem;
+    background: var(--bg);
+}

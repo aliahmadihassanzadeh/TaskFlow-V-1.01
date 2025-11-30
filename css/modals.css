@@ -1,0 +1,232 @@
+/* ======================================================
+   KEYBOARD SHORTCUTS MODAL
+====================================================== */
+
+.shortcuts-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shortcuts-modal.d-none {
+    display: none !important;
+}
+
+.shortcuts-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+}
+
+.shortcuts-content {
+    position: relative;
+    background: var(--box-bg);
+    border-radius: 16px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+    z-index: 10001;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.shortcuts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+}
+
+.shortcuts-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.shortcuts-close {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--icon);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.shortcuts-close:hover {
+    background: var(--item-bg);
+    color: var(--text);
+}
+
+.shortcuts-body {
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.shortcut-section {
+    background: var(--item-bg);
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.shortcut-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.shortcut-item:last-child {
+    border-bottom: none;
+}
+
+.shortcut-keys {
+    display: flex;
+    gap: 4px;
+}
+
+.shortcut-keys kbd {
+    background: var(--bg);
+    color: var(--text);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 28px;
+    text-align: center;
+}
+
+.shortcut-desc {
+    color: var(--text);
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* ======================================================
+   CALENDAR MODAL - SIDE PANEL (NO OVERLAY!)
+====================================================== */
+
+#calendarModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-end;
+    pointer-events: none;
+}
+
+#calendarModal.d-none {
+    display: none !important;
+}
+
+/* Remove the overlay for calendar - it blocks the tasks! */
+#calendarModal .shortcuts-overlay {
+    display: none !important;
+}
+
+.calendar-content {
+    position: relative;
+    background: var(--box-bg);
+    width: 50%;
+    min-width: 600px;
+    max-width: 800px;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    animation: slideInFromRight 0.3s ease;
+    z-index: 10001;
+    pointer-events: auto;
+    border-left: 2px solid var(--border);
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Close animation */
+#calendarModal.closing .calendar-content {
+    animation: slideOutToRight 0.3s ease forwards;
+}
+
+@keyframes slideOutToRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.calendar-body {
+    padding: 24px;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 1200px) {
+    .calendar-content {
+        width: 60%;
+        min-width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .calendar-content {
+        width: 100%;
+        min-width: 100%;
+    }
+}

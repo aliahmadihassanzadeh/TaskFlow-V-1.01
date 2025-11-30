@@ -1,0 +1,76 @@
+/* ======================================================
+   LAYOUT & BASE ELEMENTS
+====================================================== */
+
+/* Center column for main content */
+.center-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Inputs & selects follow theme */
+input,
+select,
+textarea {
+    background: var(--item-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+input::placeholder {
+    color: #9ca3af;
+}
+
+/* Buttons */
+button {
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    filter: brightness(1.05);
+}
+
+/* Delete all button */
+.delete-all-btn {
+    background: #dc3545;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.delete-all-btn:hover {
+    background: #bb2d3b;
+    transform: translateY(-1px);
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media (max-width: 768px) {
+    .cat-title {
+        font-size: 1.0rem;
+        padding: 12px;
+    }
+
+    li.item {
+        padding: 8px 10px;
+    }
+
+    .summary-card {
+        padding: 10px 12px;
+    }
+}
