@@ -25,6 +25,21 @@
     <link rel="stylesheet" href="css/modals.css" />
     <link rel="stylesheet" href="css/calendar.css" />
     <link rel="stylesheet" href="css/components.css" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TaskFlow">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="icons/icon-152x152.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-128x128.png">
+
 </head>
 <body class="preload">
 
@@ -443,12 +458,16 @@
 <script src="js/dialogs.js"></script>
 <script src="js/main.js"></script>
 
+
 <script>
     // Remove preload class after page loads to enable transitions
     window.addEventListener('load', () => {
         document.body.classList.remove('preload');
     });
 </script>
+
+<!-- PWA Script -->
+<script src="pwa.js"></script>
 
 </body>
 </html>
