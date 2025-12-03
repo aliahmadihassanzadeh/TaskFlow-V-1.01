@@ -25,7 +25,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // Register service worker
 function registerServiceWorker() {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/TaskFlow/service-worker.js')
+    navigator.serviceWorker.register('/TaskFlow-V-1.01/service-worker.js')
       .then(registration => {
         console.log('PWA: Service Worker registered successfully:', registration.scope);
         

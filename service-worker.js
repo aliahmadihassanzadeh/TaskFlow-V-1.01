@@ -3,30 +3,30 @@
 
 const CACHE_NAME = 'taskflow-v1.2';
 const urlsToCache = [
-  '/TaskFlow/',
-  '/TaskFlow/index.html',
-  '/TaskFlow/css/theme.css',
-  '/TaskFlow/css/layout.css',
-  '/TaskFlow/css/calendar.css',
-  '/TaskFlow/css/categories.css',
-  '/TaskFlow/css/items.css',
-  '/TaskFlow/css/dates.css',
-  '/TaskFlow/css/modals.css',
-  '/TaskFlow/css/progress.css',
-  '/TaskFlow/css/components.css',
-  '/TaskFlow/js/storage.js',
-  '/TaskFlow/js/categories.js',
-  '/TaskFlow/js/items.js',
-  '/TaskFlow/js/recurring.js',
-  '/TaskFlow/js/calendar.js',
-  '/TaskFlow/js/filters.js',
-  '/TaskFlow/js/sorting.js',
-  '/TaskFlow/js/shortcuts.js',
-  '/TaskFlow/js/theme.js',
-  '/TaskFlow/js/ical-export.js',
-  '/TaskFlow/js/ui.js',
-  '/TaskFlow/js/dialogs.js',
-  '/TaskFlow/js/main.js',
+  '/TaskFlow-V-1.01/',
+  '/TaskFlow-V-1.01/index.html',
+  '/TaskFlow-V-1.01/css/theme.css',
+  '/TaskFlow-V-1.01/css/layout.css',
+  '/TaskFlow-V-1.01/css/calendar.css',
+  '/TaskFlow-V-1.01/css/categories.css',
+  '/TaskFlow-V-1.01/css/items.css',
+  '/TaskFlow-V-1.01/css/dates.css',
+  '/TaskFlow-V-1.01/css/modals.css',
+  '/TaskFlow-V-1.01/css/progress.css',
+  '/TaskFlow-V-1.01/css/components.css',
+  '/TaskFlow-V-1.01/js/storage.js',
+  '/TaskFlow-V-1.01/js/categories.js',
+  '/TaskFlow-V-1.01/js/items.js',
+  '/TaskFlow-V-1.01/js/recurring.js',
+  '/TaskFlow-V-1.01/js/calendar.js',
+  '/TaskFlow-V-1.01/js/filters.js',
+  '/TaskFlow-V-1.01/js/sorting.js',
+  '/TaskFlow-V-1.01/js/shortcuts.js',
+  '/TaskFlow-V-1.01/js/theme.js',
+  '/TaskFlow-V-1.01/js/ical-export.js',
+  '/TaskFlow-V-1.01/js/ui.js',
+  '/TaskFlow-V-1.01/js/dialogs.js',
+  '/TaskFlow-V-1.01/js/main.js',
   // Bootstrap CDN (for offline use)
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css'
@@ -152,8 +152,8 @@ self.addEventListener('push', event => {
   
   const options = {
     body: event.data ? event.data.text() : 'New notification from TaskFlow',
-    icon: '/TaskFlow/icons/icon-192x192.png',
-    badge: '/TaskFlow/icons/icon-72x72.png',
+    icon: '/TaskFlow-V-1.01/icons/icon-192x192.png',
+    badge: '/TaskFlow-V-1.01/icons/icon-72x72.png',
     vibrate: [200, 100, 200],
     tag: 'taskflow-notification',
     requireInteraction: true,
@@ -176,7 +176,7 @@ self.addEventListener('notificationclick', event => {
 
   if (event.action === 'open') {
     event.waitUntil(
-      clients.openWindow('/TaskFlow/')
+      clients.openWindow('/TaskFlow-V-1.01/')
     );
   }
 });

@@ -2,7 +2,7 @@
   "name": "TaskFlow - Task Management",
   "short_name": "TaskFlow",
   "description": "A feature-rich task management app with recurring tasks, calendar view, and smart organization",
-  "start_url": "/TaskFlow/",
+  "start_url": "/TaskFlow-V-1.01/",
   "display": "standalone",
   "background_color": "#1a1d29",
   "theme_color": "#6366f1",
